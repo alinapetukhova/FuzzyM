@@ -3,8 +3,8 @@ Type: Package
 Title: FCM functions package
 Version: 0.1.0
 Author: Alina Petukhova
-Maintainer: Alina Petukhova <erar1@mail.ru>
-Description: The package contains the FCM app functions.
+Maintainer: Alina Petukhova <petukhova.alina@gmail.com>
+Description: The package contains functions for operations with fuzzy cognitive maps using t-norm and s-norm operators.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
