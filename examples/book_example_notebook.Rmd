@@ -1,0 +1,262 @@
+---
+title: "FCM package tutorial"
+output: html_notebook
+---
+
+## R markdown description
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*.
+
+# Tutorial description
+
+The tutorial explains how to execute and use the FCM package on the "book_example.xlsx" example. The tutorial aims to walk through some of the main functions in the package and to show their interdependencies to consistently compute the core components of the fuzzy cognitive maps.
+
+## Initiating the variables and inputting data
+
+Let's start with initiating an object for storing current data set.
+```{r}
+init_matrix <- list(data = NULL)
+```
+
+
+We need to input the file. It could be done by using the following code, which reads the matrix from the 4th sheet of the example file.
+
+
+```{r}
+library(xlsx)
+dataRow <- read.xlsx('book_example.xlsx',sheetIndex = 4, startRow=1, endRow=8)
+```
+
+After inputting the matrix we assign the input matrix to the variable `mat1` as follows.
+
+```{r}
+mat1<-data.matrix(dataRow[,seq(2, 8)], rownames.force = NA)
+```
+
+Let's look at the obtained matrix.
+```{r}
+mat1
+```
+## Shaping the input data
+
+Let's name the rows of the matrix.
+```{r}
+rownames(mat1) <- rownames(mat1, do.NULL = FALSE, prefix = "f_")
+mat1
+```
+Now the matrix has row and column names. Further, we fill the `init_matrix` "data" with the values from `mat1`.
+```{r}
+init_matrix$data <- mat1
+summary(init_matrix)
+```
+## Introducting some parameters
+
+Now, let's initiate some parameters in order to calculate the transitive matrix. In the case of "min t-norm", "drastic sum" and make lists of s- and t-norms:
+```{r}
+tnorm <- min_tnorm(0.5,0.3)
+tnorm
+```
+```{r}
+snormElement <- get_snorm('Drastic Sum')(0.3,0.7,0,0)
+snormElement
+```
+```{r}
+snormMatrix <-get_snorm('Drastic Sum')(0.3,0.7)
+snormMatrix
+```
+And make lists of t- and s-norm functions.
+```{r}
+tnorm_functions <- list(min_tnorm = min_tnorm, 
+                        hamacher_product_tnorm = hamacher_product_tnorm, 
+                        algebraic_product_tnorm = algebraic_product_tnorm, 
+                        einstein_product_tnorm = einstein_product_tnorm, 
+                        bounded_difference_tnorm = bounded_difference_tnorm, 
+                        drastic_product_tnorm = drastic_product_tnorm, 
+                        parameterized_mean_intersection_operator_tnorm = parameterized_mean_intersection_operator_tnorm, 
+                        dubois_intersection_operator_tnorm = dubois_intersection_operator_tnorm, 
+                        hamacher_intersection_operator_tnorm = hamacher_intersection_operator_tnorm, 
+                        yager_intersection_operator_tnorm = yager_intersection_operator_tnorm)
+
+snorm_functions <- list(drastic_sum_snorm = get_snorm("Drastic Sum"), 
+                        bounded_sum_snorm = get_snorm("Bounded Sum"), 
+                        einstein_sum_snorm = get_snorm("Einstein Sum"), 
+                        algebraic_sum_snorm = get_snorm("Algebraic Sum"), 
+                        hamacher_sum_snorm = get_snorm("Hamacher Sum"), 
+                        max_snorm = get_snorm("Max"), 
+                        hamacher_union_operator_snorm = get_snorm("Hamacher-union operator"), 
+                        yager_union_operator_snorm = get_snorm("Yager-union operator"))
+```
+
+## Calculating transitive closure matrix
+
+Now, we are able to calculate the "eigen numbers" and "positive matrix". This, in turn, allows us to calculate respective transitive closure matrix.
+
+```{r}
+eigen_numbers <- eigen_module(init_matrix$data)
+positive_matrix <- positive_matrix_calc(init_matrix$data)
+matrix <- transitive_closure(positive_matrix, tnorm_functions, tnorm, snorm_functions, snormElement, snormMatrix,
+gammaTnormMean=0.05, algaTnorm=0.1, gammaTnorm=0.02, piTnorm=0.2)
+
+transitive_matrix <- matrix
+```
+We have calculated the transitive matrix. Let's check whether it is not null.
+```{r}
+!is.null(transitive_matrix)
+```
+Once we have done the above steps, we can check whether the matrix is indeed transitive.
+```{r}
+tr_maximum_check <- multiply_matrix(transitive_matrix, transitive_matrix, tnorm_functions, tnorm, snorm_functions, snormElement,
+                                        gammaTnormMean, algaTnorm, gammaTnorm, piTnorm, 
+                                        gammaSnormElement, piSnormElement)
+aa <- transitive_matrix - tr_maximum_check
+if (sum(aa < -0.00001) == 0 ) 'yes' else 'no'
+```
+We concluded that matrix is a transitive one.
+
+Now, we can calculate the joined transitive matrix.
+
+```{r}
+transitive_matrix_joined <- matrix_transitive_join(transitive_matrix, snorm_functions, snormElement,gammaSnorm, piSnorm)
+transitive_matrix_joined
+```
+## Network data
+
+For an `init_matrix$data` we may present the graph of nodes using the `qgraph` library. 
+
+```{r}
+library(qgraph)
+qgraph(init_matrix$data,edge.labels=TRUE)
+```
+## Impulse
+
+Let's calculate the impulse data for our initial matrix.
+```{r}
+m2 <- matrix(cbind(0), ncol = 1, nrow = nrow(init_matrix$data))
+colnames(m2) <- c("x")
+DF = m2
+```
+
+For the step impulse of 10, the impulse data will be as follows:
+```{r}
+stepImpulse <- 10
+DF <- DF[,'x']
+k <- DF
+      
+for(i in 1:stepImpulse) 
+      {
+        k <- t(init_matrix$data) %*% k
+        i <- i+1
+        DF <- cbind(DF, round(k, 5))
+      }
+colnames(DF) <- c('x', 1:stepImpulse)
+
+data_impulse <- DF
+data.frame(data_impulse)
+```
+The corresponding plot for the obtained impulse data is shown below.
+
+```{r}
+matplot(t(data_impulse),type = "l", xlab = NULL, ylab = "Impulse")
+legend("topright", inset=0, legend=c(1:nrow(data_impulse)), pch=1,   col=c(1:nrow(data_impulse)), horiz=TRUE)
+```
+## Direct task
+
+To calculate the direct task, the control vector should be identified.
+
+```{r}
+finalvector <- length(which(colSums(init_matrix$data == 0) == ncol(init_matrix$data)))
+DF_control_vector <- finalvector
+DF_control_vector
+```
+Since the value of `DF_control_vector` is 0, there aren't any control vectors in data.
+
+Therefore, the direct solution matrix is NULL as well.
+
+## Reverse task
+Let's obtain the DF_goal_vector to calculate the reverse task.
+
+```{r}
+if (!is.null(init_matrix$data)) {
+     finalvector <- length(which(rowSums(init_matrix$data == 0) == nrow(init_matrix$data)))
+      if (finalvector > 0)
+      data.frame(N = rep(0, finalvector),
+                 G = rep(0, finalvector),
+                 stringsAsFactors = FALSE)
+    }
+DF_goal_vector <- finalvector
+
+DF_goal_vector
+```
+The same as for direct task, the reverse task control vector is absent as well as the corresponding solution matrix.
+
+
+## Consonanse
+
+Let's look at the consonanse plot for recently calculated `transitive_matrix_joined`. For that purpose we should firstly use `cross_consonanse` function.
+
+```{r}
+c_mat <- cross_consonanse(transitive_matrix_joined)
+borderCut = 0.7
+c_cut <-  ifelse(c_mat<borderCut,0,1)
+qgraph(c_cut,edge.labels=TRUE,title="Consonance")
+```
+## Dissonanse
+
+Very similarly to consonanse we can obtain the dissonanse plot.
+
+```{r}
+d_mat <- cross_dissonanse(transitive_matrix_joined)
+d_cut <-  ifelse(d_mat<borderCut,0,1)
+qgraph(d_cut,edge.labels=TRUE,title="Dissonance")
+```
+## Positive influence
+
+Positive influence calculation in almost identical to the previous ones.
+
+```{r}
+p_mat <- cross_positive_influence(transitive_matrix_joined)
+p_cut <-  ifelse(p_mat<borderCut,0,1)
+qgraph(p_cut,edge.labels=TRUE,title="Positive influence")
+```
+## Negative influence
+
+Finally, we can plot the negative influence.
+
+```{r}
+n_mat <- cross_negative_influence(transitive_matrix_joined)
+n_cut <-  ifelse(abs(n_mat)<borderCut,0,1)
+qgraph(n_cut,edge.labels=TRUE,title="Negative influence")
+```
+
+## Table consonanse
+
+We can also present the consonanse / dissonanse information in the table.
+```{r}
+consonanse_dissonanse <- consonanse_dissonanse(transitive_matrix_joined)
+data.frame(consonanse_dissonanse)
+```
+## IK positive
+
+We can now calculate IK positive for the calculated above transitive joined matrix. As for parameters, `from` and `to` are set manually.
+```{r}
+from = 1
+to = 1
+IKPositive <- ik_pos_maximum(transitive_matrix_joined, init_matrix$data, from, to)
+data.frame(IKPositive)
+```
+## IK negative
+
+Very similarly to the previous section, we can now calculate IK negative with the same parameters and present the results as a data frame.
+```{r}
+IKNegative <- ik_neg_maximum(transitive_matrix_joined, init_matrix$data,from,to)
+data.frame(IKNegative)
+```
+## Conclusion
+
+So far, for the given book example matrix we were managed to calculate transitive matrix, check whether it is transitive to verify the correctness of the calculations. Furthemore, for the respective transitive matrix we allowed to get calculate and plot netword data in the form of nodes, impulse, direct and reverse tasks, consonanse/dissonanse plots and the respective consonanse table, positive and negative influence plots as well as the IK positive and negative.
+
+During the tutorial we manually assigned some values to the parameters. For the purpose of the further research, you may try different values and compare the obtained results.
+
+To conclude, using the FCM package we are able to calculate different components which further could be used as a core for a separate application.
