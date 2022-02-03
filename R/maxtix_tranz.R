@@ -9,7 +9,10 @@
 #' @param ipath,jpath parameter
 #' @param vectorY,vector,vectorX vector
 #' @name maxtix_tranz
-NULL
+#' @usage tnorm_functions
+#' @usage snorm_functions
+#' @usage snorm_functions_reverse
+#' @usage tnorm_functions_reverse
 
 #' @rdname maxtix_tranz
 #' @export

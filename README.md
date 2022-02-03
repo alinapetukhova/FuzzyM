@@ -12,7 +12,7 @@ parameters and reverse task solution of the fuzzy map.
 ## Requirements
 
 To see an FuzzyM package in action follow the instructions in the README
-for the [FCM app](https://github.com/alinapetukhova/FCM.git).
+and see the examples in the "examles" folder.
 
 ## Installation
 

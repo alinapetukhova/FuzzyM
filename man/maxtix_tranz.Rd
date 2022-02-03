@@ -21,7 +21,13 @@
 \alias{direct_task}
 \title{matrix_tranz}
 \usage{
-eigen_module(initmatrix)
+tnorm_functions
+
+snorm_functions
+
+snorm_functions_reverse
+
+tnorm_functions_reverse
 
 positive_matrix_calc(initmatrix)
 
