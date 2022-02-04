@@ -3,7 +3,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-FuzzyM package contains functions for matrix based computations of the
+'FuzzyM' package contains functions for matrix based computations of the
 Fuzzy Cognitive Map application to solve decision making problems,
 modeling and simulating complex systems. Package consists of R scripts
 each of one containing sets of functions in order to compute system
@@ -11,7 +11,7 @@ parameters and reverse task solution of the fuzzy map.
 
 ## Requirements
 
-To see an FuzzyM package in action follow the instructions in the README
+To see an 'FuzzyM' package in action follow the instructions in the README
 and see the examples in the "examles" folder.
 
 ## Installation

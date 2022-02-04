@@ -1,13 +1,12 @@
 Package: FuzzyM
 Type: Package
-Title: FuzzyM Functions Package
+Title: Fuzzy cognitive maps operations
 Version: 0.1.0
 Author: Alina Petukhova
 Maintainer: Alina Petukhova <petukhova.alina@gmail.com>
 Description: Contains functions for operations with fuzzy cognitive maps using t-norm and s-norm operators.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.2
 Imports: utils
 Suggests: 
