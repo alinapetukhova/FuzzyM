@@ -17,7 +17,22 @@ transitive_closure_prob_max(positivematrix)
 probability_matrix_transitive(maxmatrix)
 }
 \arguments{
-\item{matrix_1, matrix_2, positivematrix, maxmatrix}{matrix}
+\item{matrix_1}{matrix}
+
+\item{matrix_2}{matrix}
+
+\item{positivematrix}{matrix}
+
+\item{maxmatrix}{matrix}
+}
+\value{
+multiplication of matrix \code{matrix_1} and \code{matrix_2}
+
+transitive closure of matrix \code{positivematrix}
+
+transitive closure of matrix \code{positivematrix} with max function
+
+joined transitive closure of matrix \code{maxmatrix}
 }
 \description{
 The maxtix_tranz_probability set of functions is aimed to calculate maximum matrix based on transitive closure

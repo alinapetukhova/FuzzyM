@@ -3,11 +3,6 @@
 #' @description
 #' The maxtix_tranz set of functions is aimed to calculate dissonance, consonance and influence
 #'
-#' @param initmatrix,df_matrix,snormMatrix,matrix,initMatrix,matrix_1,matrix_2,positivematrix,finalmatrix matrix
-#' @param tnorm_functions,snorm_functions,snorm_functions_reverse,tnorm_functions_reverse function
-#' @param tnorm,gammaTnormMean,algaTnorm,gammaTnorm,piTnorm,gammaSnorm,piSnorm,snorm,tnorm_reverse,snorm_reverse norm
-#' @param ipath,jpath parameter
-#' @param vectorY,vector,vectorX vector
 #' @name maxtix_tranz
 #' @usage tnorm_functions
 #' @usage snorm_functions
@@ -15,6 +10,8 @@
 #' @usage tnorm_functions_reverse
 
 #' @rdname maxtix_tranz
+#' @param initmatrix matrix
+#' @return eigen values of \code{initmatrix}
 #' @export
 eigen_module <- function(initmatrix)
 {
@@ -23,10 +20,11 @@ eigen_module <- function(initmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param initmatrix matrix
+#' @return positive matrix of \code{initmatrix}
 #' @export
 positive_matrix_calc <- function(initmatrix)
 {
-
   positivematrix <- matrix(data=NA, nrow=nrow(initmatrix)*2, ncol=ncol(initmatrix)*2)
   k <- 1
   m <- 1
@@ -58,6 +56,17 @@ positive_matrix_calc <- function(initmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param positivematrix matrix
+#' @param tnorm function
+#' @param snorm function
+#' @param snormMatrix matrix
+#' @param gammaTnormMean function
+#' @param algaTnorm function
+#' @param gammaTnorm function
+#' @param piTnorm function
+#' @param gammaSnorm function
+#' @param piSnorm function
+#' @return transitive closure of \code{positivematrix}
 #' @export
 transitive_closure <- function(positivematrix, tnorm, snorm, snormMatrix,
                                gammaTnormMean, algaTnorm, gammaTnorm, piTnorm,
@@ -107,6 +116,10 @@ transitive_closure <- function(positivematrix, tnorm, snorm, snormMatrix,
 }
 
 #' @rdname maxtix_tranz
+#' @param matrix matrix
+#' @param gammaSnorm function
+#' @param piSnorm function
+#' @return aggregation function for transitive closure of \code{matrix}
 #' @export
 matrix_transitive_join <- function(matrix, snorm, gammaSnorm, piSnorm)
 {
@@ -127,6 +140,8 @@ matrix_transitive_join <- function(matrix, snorm, gammaSnorm, piSnorm)
 }
 
 #' @rdname maxtix_tranz
+#' @param finalmatrix matrix
+#' @return system indicators of \code{finalmatrix}
 #' @export
 consonanse_dissonanse <- function(finalmatrix)
 {
@@ -200,6 +215,8 @@ consonanse_dissonanse <- function(finalmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param finalmatrix matrix
+#' @return cross consonanse of \code{finalmatrix}
 #' @export
 cross_consonanse <- function(finalmatrix)
 {
@@ -233,6 +250,8 @@ cross_consonanse <- function(finalmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param finalmatrix matrix
+#' @return cross dissonanse of \code{finalmatrix}
 #' @export
 cross_dissonanse <- function(finalmatrix)
 {
@@ -271,6 +290,8 @@ cross_dissonanse <- function(finalmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param finalmatrix matrix
+#' @return cross positive influence of \code{finalmatrix}
 #' @export
 cross_positive_influence <- function(finalmatrix)
 {
@@ -301,6 +322,8 @@ cross_positive_influence <- function(finalmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param finalmatrix matrix
+#' @return cross negative influence of \code{finalmatrix}
 #' @export
 cross_negative_influence <- function(finalmatrix)
 {
@@ -332,6 +355,9 @@ cross_negative_influence <- function(finalmatrix)
 }
 
 #' @rdname maxtix_tranz
+#' @param vector matrix
+#' @param matrix matrix
+#' @return impulse of \code{matrix} based on \code{vector}
 #' @export
 impuls_vector <- function(vector, matrix)
 {
@@ -346,13 +372,15 @@ impuls_vector <- function(vector, matrix)
       theSum <- max(theSum, vector[k] * matrix[k, col])
     }
     newvector[col] <- theSum
-    print (matrix[, col])
   }
 
   newvector
 }
 
 #' @rdname maxtix_tranz
+#' @param matrix matrix
+#' @param vector matrix
+#' @return multiplication of \code{matrix} and \code{vector}
 #' @export
 multiply_vector <- function(matrix, vector)
 {
@@ -373,6 +401,17 @@ multiply_vector <- function(matrix, vector)
 }
 
 #' @rdname maxtix_tranz
+#' @param matrix_1 matrix
+#' @param matrix_2 matrix
+#' @param tnorm function
+#' @param snorm function
+#' @param gammaTnormMean function
+#' @param algaTnorm function
+#' @param gammaTnorm function
+#' @param piTnorm function
+#' @param gammaSnorm function
+#' @param piSnorm function
+#' @return multiplication of \code{matrix_1} and \code{matrix_2}
 #' @export
 multiply_matrix <- function(matrix_1, matrix_2, tnorm, snorm, gammaTnormMean, algaTnorm, gammaTnorm, piTnorm,
                             gammaSnorm, piSnorm)
@@ -399,6 +438,9 @@ multiply_matrix <- function(matrix_1, matrix_2, tnorm, snorm, gammaTnormMean, al
 }
 
 #' @rdname maxtix_tranz
+#' @param matrix_1 matrix
+#' @param matrix_2 matrix
+#' @return maximum of \code{matrix_1} and \code{matrix_2}
 #' @export
 maximum_matrix <- function(matrix_1, matrix_2)
 {
@@ -419,6 +461,11 @@ maximum_matrix <- function(matrix_1, matrix_2)
 }
 
 #' @rdname maxtix_tranz
+#' @param matrix matrix
+#' @param initMatrix matrix
+#' @param ipath vector
+#' @param jpath vector
+#' @return ik walk for \code{matrix} based on \code{initMatrix} with \code{ipath} and \code{jpath}
 #' @export
 ik_pos_maximum <- function(matrix, initMatrix, ipath, jpath)
 {
@@ -481,6 +528,11 @@ ik_pos_maximum <- function(matrix, initMatrix, ipath, jpath)
 }
 
 #' @rdname maxtix_tranz
+#' @param matrix matrix
+#' @param initMatrix matrix
+#' @param ipath vector
+#' @param jpath vector
+#' @return ik negative walk for \code{matrix} based on \code{initMatrix} with \code{ipath} and \code{jpath}
 #' @export
 ik_neg_maximum <- function(matrix, initMatrix, ipath, jpath)
 {
@@ -538,8 +590,16 @@ ik_neg_maximum <- function(matrix, initMatrix, ipath, jpath)
 }
 
 #' @rdname maxtix_tranz
+#' @param df_matrix matrix
+#' @param vectorY vector
+#' @param tnorm function
+#' @param tnorm_reverse function
+#' @param snorm function
+#' @param snormMatrix function
+#' @param snorm_reverse function
+#' @return reverse task solution for \code{df_matrix} with \code{vectorY} using \code{tnorm}, \code{tnorm_reverse}, \code{snorm}, \code{snormMatrix}, \code{snorm_reverse}
 #' @export
-reverse_task <- function(df_matrix, vectorY, tnorm, tnorm_reverse, snorm, snormMatrix, snorm_reverse) #, tnorm, jpath
+reverse_task <- function(df_matrix, vectorY, tnorm, tnorm_reverse, snorm, snormMatrix, snorm_reverse)
 {
   rownames(df_matrix) <- colnames(df_matrix)
 
@@ -548,11 +608,11 @@ reverse_task <- function(df_matrix, vectorY, tnorm, tnorm_reverse, snorm, snormM
   #count 0 rows. 0rowSize - 4 (save number of rows - for columns)
   zeroRowName <- names(which(rowSums(df_matrix == 0) == nrow(df_matrix)))
 
-  print("target nodes")
-  print(zeroRowName)
+  message("target nodes")
+  message(zeroRowName)
 
-  print("control nodes")
-  print(zeroColName)
+  message("control nodes")
+  message(zeroColName)
 
   DmatInit <- t(df_matrix[zeroColName, zeroRowName])
   Dmat <- positive_matrix_calc(DmatInit)
@@ -581,6 +641,12 @@ reverse_task <- function(df_matrix, vectorY, tnorm, tnorm_reverse, snorm, snormM
 }
 
 #' @rdname maxtix_tranz
+#' @param df_matrix matrix
+#' @param vectorX vector
+#' @param tnorm function
+#' @param snorm function
+#' @param snormMatrix function
+#' @return direct task solution for \code{df_matrix} with \code{vectorX} using \code{tnorm}, \code{snorm}, \code{snormMatrix}
 #' @export
 direct_task <- function(df_matrix, vectorX, tnorm, snorm, snormMatrix)
 {
@@ -609,16 +675,16 @@ direct_task <- function(df_matrix, vectorX, tnorm, snorm, snormMatrix)
 
   ABmat <- multiply_matrix(Amat_transitive_closure, Bmat, tnorm, snorm)
   x_new <- multiply_vector(ABmat, vectorX)
-  print('x_new')
-  print(x_new)
+  message('x_new')
+  message(x_new)
 
   CAmat <-  multiply_matrix(Cmat, Amat_transitive_closure, tnorm, snorm)
   CABmat <-  multiply_matrix(CAmat, Bmat, tnorm, snorm)
   CABDmat <- maximum_matrix(CABmat, Dmat)
   y_new <- multiply_vector(CABDmat, vectorX)
-  print('y_new')
-  print(y_new)
-  print('final')
+  message('y_new')
+  message(y_new)
+  message('final')
   finalMatrix <- data.frame(A= numeric(0), B= numeric(0))
   for(col in seq(from=1, to=length(y_new), by=2))
   {

@@ -92,15 +92,88 @@ reverse_task(
 direct_task(df_matrix, vectorX, tnorm, snorm, snormMatrix)
 }
 \arguments{
-\item{initmatrix, df_matrix, snormMatrix, matrix, initMatrix, matrix_1, matrix_2, positivematrix, finalmatrix}{matrix}
+\item{initmatrix}{matrix}
 
-\item{tnorm, gammaTnormMean, algaTnorm, gammaTnorm, piTnorm, gammaSnorm, piSnorm, snorm, tnorm_reverse, snorm_reverse}{norm}
+\item{positivematrix}{matrix}
 
-\item{ipath, jpath}{parameter}
+\item{tnorm}{function}
 
-\item{vectorY, vector, vectorX}{vector}
+\item{snorm}{function}
 
-\item{tnorm_functions, snorm_functions, snorm_functions_reverse, tnorm_functions_reverse}{function}
+\item{snormMatrix}{function}
+
+\item{gammaTnormMean}{function}
+
+\item{algaTnorm}{function}
+
+\item{gammaTnorm}{function}
+
+\item{piTnorm}{function}
+
+\item{gammaSnorm}{function}
+
+\item{piSnorm}{function}
+
+\item{matrix}{matrix}
+
+\item{finalmatrix}{matrix}
+
+\item{vector}{matrix}
+
+\item{matrix_1}{matrix}
+
+\item{matrix_2}{matrix}
+
+\item{initMatrix}{matrix}
+
+\item{ipath}{vector}
+
+\item{jpath}{vector}
+
+\item{df_matrix}{matrix}
+
+\item{vectorY}{vector}
+
+\item{tnorm_reverse}{function}
+
+\item{snorm_reverse}{function}
+
+\item{vectorX}{vector}
+}
+\value{
+eigen values of \code{initmatrix}
+
+positive matrix of \code{initmatrix}
+
+transitive closure of \code{positivematrix}
+
+aggregation function for transitive closure of \code{matrix}
+
+system indicators of \code{finalmatrix}
+
+cross consonanse of \code{finalmatrix}
+
+cross dissonanse of \code{finalmatrix}
+
+cross positive influence of \code{finalmatrix}
+
+cross negative influence of \code{finalmatrix}
+
+impulse of \code{matrix} based on \code{vector}
+
+multiplication of \code{matrix} and \code{vector}
+
+multiplication of \code{matrix_1} and \code{matrix_2}
+
+maximum of \code{matrix_1} and \code{matrix_2}
+
+ik walk for \code{matrix} based on \code{initMatrix} with \code{ipath} and \code{jpath}
+
+ik negative walk for \code{matrix} based on \code{initMatrix} with \code{ipath} and \code{jpath}
+
+reverse task solution for \code{df_matrix} with \code{vectorY} using \code{tnorm}, \code{tnorm_reverse}, \code{snorm}, \code{snormMatrix}, \code{snorm_reverse}
+
+direct task solution for \code{df_matrix} with \code{vectorX} using \code{tnorm}, \code{snorm}, \code{snormMatrix}
 }
 \description{
 The maxtix_tranz set of functions is aimed to calculate dissonance, consonance and influence

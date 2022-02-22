@@ -12,7 +12,16 @@ calc_reverse_task(matrix, vector, tnorm, tnorm_reverse, snorm, snorm_reverse)
 
 \item{vector}{vector}
 
-\item{tnorm, tnorm_reverse, snorm, snorm_reverse}{norm}
+\item{tnorm}{function}
+
+\item{tnorm_reverse}{function}
+
+\item{snorm}{function}
+
+\item{snorm_reverse}{function}
+}
+\value{
+solution of polynomial equation of matrix \code{matrix}, \code{vector} using \code{tnorm}, \code{tnorm_reverse}, \code{snorm}, \code{snorm_reverse}
 }
 \description{
 polinomial_eq_dominant set contains 1 function: reverse task calculation.

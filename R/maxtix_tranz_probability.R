@@ -3,11 +3,13 @@
 #' @description
 #' The maxtix_tranz_probability set of functions is aimed to calculate maximum matrix based on transitive closure
 #'
-#' @param matrix_1,matrix_2,positivematrix,maxmatrix matrix
 #' @name maxtix_tranz_probability
 NULL
 
 #' @rdname maxtix_tranz_probability
+#' @param matrix_1 matrix
+#' @param matrix_2 matrix
+#' @return multiplication of matrix \code{matrix_1} and \code{matrix_2}
 #' @export
 multiply_matrix_prob <- function(matrix_1, matrix_2)
 {
@@ -34,6 +36,8 @@ multiply_matrix_prob <- function(matrix_1, matrix_2)
 }
 
 #' @rdname maxtix_tranz_probability
+#' @param positivematrix matrix
+#' @return transitive closure of matrix \code{positivematrix}
 #' @export
 transitive_closure_prob <- function(positivematrix)
 {
@@ -73,6 +77,8 @@ transitive_closure_prob <- function(positivematrix)
 }
 
 #' @rdname maxtix_tranz_probability
+#' @param positivematrix matrix
+#' @return transitive closure of matrix \code{positivematrix} with max function
 #' @export
 transitive_closure_prob_max <- function(positivematrix)
 {
@@ -109,6 +115,8 @@ transitive_closure_prob_max <- function(positivematrix)
 }
 
 #' @rdname maxtix_tranz_probability
+#' @param maxmatrix matrix
+#' @return joined transitive closure of matrix \code{maxmatrix}
 #' @export
 probability_matrix_transitive <- function(maxmatrix)
 {

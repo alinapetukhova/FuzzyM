@@ -5,13 +5,17 @@
 #' Each function takes a matrix, vector and t-norm as arguments and returns a solution matrix.
 #' The calculation procedure of the function includes a solution existence check and a solution check.
 #' @importFrom utils combn
-#' @param matrix matrix
-#' @param tnorm,tnorm_reverse,snorm,snorm_reverse norm
-#' @param vector vector
 #' @name polinomial_eq_dominant
 NULL
 
 #' @rdname polinomial_eq_dominant
+#' @param matrix matrix
+#' @param vector vector
+#' @param tnorm function
+#' @param tnorm_reverse function
+#' @param snorm function
+#' @param snorm_reverse function
+#' @return solution of polynomial equation of matrix \code{matrix}, \code{vector} using \code{tnorm}, \code{tnorm_reverse}, \code{snorm}, \code{snorm_reverse}
 #' @export
 calc_reverse_task <- function(matrix, vector, tnorm, tnorm_reverse, snorm, snorm_reverse) {
 
@@ -71,13 +75,13 @@ calc_reverse_task <- function(matrix, vector, tnorm, tnorm_reverse, snorm, snorm
     }
 
     if (!all(vector == maxSolutionCheck)) {
-      print("solution doesn't exist")
+      warning("solution doesn't exist")
 
-      print("old target vector")
-      print(vector)
+      message("old target vector")
+      message(vector)
 
-      print("new target vector")
-      print(maxSolutionCheck)
+      message("new target vector")
+      message(maxSolutionCheck)
       calc_reverse_task(matrix, maxSolutionCheck, tnorm, tnorm_reverse, snorm, snorm_reverse)
     }
     else {
@@ -178,7 +182,7 @@ calc_reverse_task <- function(matrix, vector, tnorm, tnorm_reverse, snorm, snorm
         if (!all(vector == minSolutionCheck))
           toRemove <- c(toRemove, sol)
       }
-      print('solution')
+      message('solution')
       solutionMatrixFinal
     }
   }
